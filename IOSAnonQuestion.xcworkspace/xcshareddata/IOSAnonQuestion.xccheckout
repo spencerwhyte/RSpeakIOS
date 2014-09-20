@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C147B7BD-0F22-42B2-9229-ACE3806DDCDD</string>
+	<key>IDESourceControlProjectName</key>
+	<string>IOSAnonQuestion</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>3434FAA2-B338-4881-8725-F63C0FB89C11</key>
+		<string>ssh://github.com/spencerwhyte/RSpeak.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>IOSAnonQuestion/IOSAnonQuestion.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>3434FAA2-B338-4881-8725-F63C0FB89C11</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/spencerwhyte/RSpeak.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>3434FAA2-B338-4881-8725-F63C0FB89C11</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3434FAA2-B338-4881-8725-F63C0FB89C11</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AnonQuestion</string>
+		</dict>
+	</array>
+</dict>
+</plist>
