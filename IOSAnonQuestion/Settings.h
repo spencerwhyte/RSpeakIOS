@@ -18,7 +18,17 @@
 -(BOOL)didRegister;
 -(void)setRegistered:(BOOL)registered;
 
+-(BOOL)didRegisterForPushNotifications;
+-(void)setRegisteredForPushNotifications:(BOOL)registeredForPushNotifications;
+
+
+
 -(NSString*)deviceID;
 -(NSString*)deviceType;
+
+
+-(BOOL)hasAquiredPushNotificationID;
+-(void)setPushNotificationID:(NSString*)newPushNotificationID;
+-(NSString*)pushNotificationID;
 
 @end

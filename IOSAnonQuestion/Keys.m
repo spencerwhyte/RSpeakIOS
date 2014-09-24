@@ -10,3 +10,5 @@
 
 NSString * const keyDefaultRecipientsCount = @"defaultRecipientsCount";
 NSString * const keyDidRegister = @"didRegister";
+NSString * const keyDidRegisterForPushNotifications = @"didRegisterForPushNotifications";
+NSString * const keyPushNotificationID = @"pushNotificationID";

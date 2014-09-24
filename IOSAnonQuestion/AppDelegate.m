@@ -52,12 +52,32 @@
     
     [Cloud sharedInstance].managedObjectContext = self.managedObjectContext;
     
-    
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     
+
     
     return YES;
+}
+
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    
+    // TODO: Note the device id, sync to server
+    
+    int length = [deviceToken length];
+    
+    NSLog(@"Device Token Length %d", length);
+    
+    NSString* deviceTokenString = [[[[deviceToken description]
+                                stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                               stringByReplacingOccurrencesOfString: @">" withString: @""]
+                              stringByReplacingOccurrencesOfString: @" " withString: @""];
+
+    
+    [[Settings sharedInstance] setPushNotificationID:deviceTokenString];
+    
+    NSLog(@"Just set the device identifier to be %@", deviceTokenString);
+    
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -88,7 +108,7 @@
 }
 
 -(void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
-    
+    NSLog(@"GOT A FRICKEN PUSH! %@", userInfo);
     
 }
 

@@ -274,8 +274,9 @@ static Cloud * sharedInstance = nil;
     }];
 }
 
--(void)registerPushNotifications{
-    NSLog(@"Register Device");
+-(void)registerForPushNotifications{
+    NSLog(@"Registering For Push Notifications");
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -285,25 +286,26 @@ static Cloud * sharedInstance = nil;
     NSString * deviceID = [[Settings sharedInstance] deviceID];
     
     
-    NSString * pushNotificationID = [[Settings sharedInstance] push];
+    NSString * pushNotificationID = [[Settings sharedInstance] pushNotificationID];
     
     
-    NSDictionary * parameters = @{@"device_id":deviceID,@"device_type":deviceType};
+    NSDictionary * parameters = @{@"device_id":deviceID,@"push_notification_id":pushNotificationID};
     
     self.totalRequestsInProgress++;
     
     [manager POST:url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Just successfully registered the device with ID: %@ and type: %@", deviceID, deviceType);
-        [[Settings sharedInstance] setRegistered:YES];
+        NSLog(@"Just successfully registered the device apple: %@ and pushid: %@", deviceID, pushNotificationID);
+        [[Settings sharedInstance] setRegisteredForPushNotifications:YES];
+        
+        [self synchronize]; // Go back to whatever else we were going to use
         
         self.totalRequestsInProgress--;
-        
-        [self synchronize]; // Get back to whatever else we were going to do
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error registering: %@", error);
         self.totalRequestsInProgress--;
     }];
+    
+    
 }
 
 
@@ -500,7 +502,7 @@ static Cloud * sharedInstance = nil;
     _totalRequestsInProgress = totalRequestsInProgress;
     if(totalRequestsInProgress == 0){ // This means that we just finished all of our http operations
         
-        NSLog(@"Sending out that push notification");
+        NSLog(@"Sending out that ns notification");
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"CloudDidFinishSynchronizing" object:nil];
     }
@@ -522,24 +524,28 @@ static Cloud * sharedInstance = nil;
         if(![[Settings sharedInstance] didRegister]){ // If we have not registered this device
             [self registerDevice];
         }else{ // If we have not registered the device, we probably shouldnt do anything else with the server
-        
-            /*
-            Should return a list of URLS that we should hit for new information
-            We need to be careful here
-         
-            */
             
-            // Check and see if our credit score has changed etc.
-            [self retrieveCreditScore];
-            
-            // Check and see if we have any updates to our model
-            [self retrieveUpdates];
-            
-            // Upload our latest questions
-            [self pushQuestions];
-            
-            // Upload our latest messages
-            [self pushMessages];
+            if(YES || ![[Settings sharedInstance] didRegisterForPushNotifications] && [[Settings sharedInstance] hasAquiredPushNotificationID]){ // We should probably register for push notifications if we can
+                [self registerForPushNotifications];
+            }else{
+                /*
+                Should return a list of URLS that we should hit for new information
+                We need to be careful here
+             
+                */
+                
+                // Check and see if our credit score has changed etc.
+                [self retrieveCreditScore];
+                
+                // Check and see if we have any updates to our model
+                [self retrieveUpdates];
+                
+                // Upload our latest questions
+                [self pushQuestions];
+                
+                // Upload our latest messages
+                [self pushMessages];
+            }
         }
     }
 }

@@ -59,9 +59,38 @@ static Settings * sharedSettings = nil;
 }
 
 
+-(BOOL)didRegisterForPushNotifications{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults boolForKey:keyDidRegisterForPushNotifications];
+}
+
+-(void)setRegisteredForPushNotifications:(BOOL)registeredForPushNotifications{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:registeredForPushNotifications forKey:keyDidRegisterForPushNotifications];
+    [defaults synchronize];
+}
+
+
+-(BOOL)hasAquiredPushNotificationID{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    return ([defaults stringForKey:keyPushNotificationID]  != nil);
+}
+
+-(void)setPushNotificationID:(NSString*)newPushNotificationID{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:newPushNotificationID forKey:keyPushNotificationID];
+    [defaults synchronize];
+}
+
+-(NSString*)pushNotificationID{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults stringForKey:keyPushNotificationID];
+}
+
 -(NSString *)deviceID{
     return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
 }
+
 
 -(NSString *)deviceType{
     struct utsname systemInfo;

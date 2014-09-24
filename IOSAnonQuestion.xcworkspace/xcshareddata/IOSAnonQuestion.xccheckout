@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>C147B7BD-0F22-42B2-9229-ACE3806DDCDD</string>
+	<string>B0706CF1-29B5-4643-918D-5F2D90C01CD0</string>
 	<key>IDESourceControlProjectName</key>
 	<string>IOSAnonQuestion</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>3434FAA2-B338-4881-8725-F63C0FB89C11</key>
-		<string>ssh://github.com/spencerwhyte/RSpeak.git</string>
+		<key>5B7CE1BE-024B-4824-B119-A40C966FAF3F</key>
+		<string>https://github.com/spencerwhyte/RSPeakIOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>IOSAnonQuestion/IOSAnonQuestion.xcworkspace</string>
+	<string>IOSAnonQuestion.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>3434FAA2-B338-4881-8725-F63C0FB89C11</key>
-		<string>../..</string>
+		<key>5B7CE1BE-024B-4824-B119-A40C966FAF3F</key>
+		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/spencerwhyte/RSpeak.git</string>
+	<string>https://github.com/spencerwhyte/RSPeakIOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>3434FAA2-B338-4881-8725-F63C0FB89C11</string>
+	<string>5B7CE1BE-024B-4824-B119-A40C966FAF3F</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>3434FAA2-B338-4881-8725-F63C0FB89C11</string>
+			<string>5B7CE1BE-024B-4824-B119-A40C966FAF3F</string>
 			<key>IDESourceControlWCCName</key>
-			<string>AnonQuestion</string>
+			<string>IOSAnonQuestion</string>
 		</dict>
 	</array>
 </dict>

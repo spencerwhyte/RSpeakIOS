@@ -8,3 +8,5 @@
 
 extern NSString *const keyDefaultRecipientsCount;
 extern NSString *const keyDidRegister;
+extern NSString *const keyDidRegisterForPushNotifications;
+extern NSString *const keyPushNotificationID;

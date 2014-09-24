@@ -31,4 +31,7 @@
 +(Cloud*)sharedInstance;
 
 
+
+
+
 @end
