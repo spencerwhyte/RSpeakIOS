@@ -27,7 +27,7 @@ static Cloud * sharedInstance = nil;
         #if TARGET_IPHONE_SIMULATOR
             self.baseURL = @"127.0.0.1:8000";
         #elif TARGET_OS_IPHONE
-            self.baseURL = @"192.168.2.24:8000";
+            self.baseURL = @"192.168.0.23:8000";
         #endif
         
         self.protocolVersion = @"v1";
@@ -289,6 +289,9 @@ static Cloud * sharedInstance = nil;
     NSString * pushNotificationID = [[Settings sharedInstance] pushNotificationID];
     
     
+    NSLog(@"Device ID: %@", deviceID);
+    NSLog(@"Push Notification ID: %@", pushNotificationID);
+    
     NSDictionary * parameters = @{@"device_id":deviceID,@"push_notification_id":pushNotificationID};
     
     self.totalRequestsInProgress++;
@@ -378,10 +381,10 @@ static Cloud * sharedInstance = nil;
     
     NSString * deviceID = [[Settings sharedInstance] deviceID];
     NSDictionary *parameters = @{@"device_id": deviceID};
-    NSString * url = [self apiURLWithPath:@"/retrieve/credit_score/"];
+    NSString * url = [self apiURLWithPath:@"/credit_score/"];
     
     self.totalRequestsInProgress++;
-    [manager POST:url parameters:parameters success:^(AFHTTPRequestOperation * operation, id responseObject){
+    [manager GET:url parameters:parameters success:^(AFHTTPRequestOperation * operation, id responseObject){
         // Success
         NSError * error;
         NSDictionary* json = [NSJSONSerialization
@@ -412,9 +415,17 @@ static Cloud * sharedInstance = nil;
     NSString * deviceID = [[Settings sharedInstance] deviceID];
     NSDictionary *parameters = @{@"device_id": deviceID};
     NSString * url = [self apiURLWithPath:@"/retrieve/updates/"];
+    
+    NSLog(@"Device ID: %@", deviceID);
+    NSLog(@"Parameters: %@", parameters);
+    
     [manager POST:url parameters:parameters success:^(AFHTTPRequestOperation * operation, id responseObject){
         // Success
         NSError * error;
+        
+        NSString * a = operation.responseString;
+        
+        NSLog(@"SERVER RESPONSE: %@", a);
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:responseObject
                               options:NSJSONReadingMutableContainers
@@ -422,6 +433,7 @@ static Cloud * sharedInstance = nil;
         
         
         NSArray * questionUpdates = [json valueForKey:@"question_updates"];
+        
         if(![questionUpdates isEqual:[NSNull null]]){
             for(NSDictionary * update in questionUpdates){
                 
@@ -525,7 +537,7 @@ static Cloud * sharedInstance = nil;
             [self registerDevice];
         }else{ // If we have not registered the device, we probably shouldnt do anything else with the server
             
-            if(YES || ![[Settings sharedInstance] didRegisterForPushNotifications] && [[Settings sharedInstance] hasAquiredPushNotificationID]){ // We should probably register for push notifications if we can
+            if(![[Settings sharedInstance] didRegisterForPushNotifications] && [[Settings sharedInstance] hasAquiredPushNotificationID]){ // We should probably register for push notifications if we can
                 [self registerForPushNotifications];
             }else{
                 /*

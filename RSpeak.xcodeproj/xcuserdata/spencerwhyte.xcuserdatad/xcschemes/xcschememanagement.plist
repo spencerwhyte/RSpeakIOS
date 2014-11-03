@@ -7,11 +7,16 @@
 		<key>RSpeak.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>F3881DF61A070AE00071240B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>F3F2A78218D4D0D6001401C0</key>
 		<dict>
 			<key>primary</key>

@@ -793,6 +793,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IOSAnonQuestion/RSpeak-Prefix.pch";
 				INFOPLIST_FILE = "IOSAnonQuestion/RSpeak-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = RSpeak;
 				PROVISIONING_PROFILE = "26469a8a-0b97-49ce-8e4f-f7cca3ea3b93";
 				WRAPPER_EXTENSION = app;
@@ -809,6 +810,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IOSAnonQuestion/RSpeak-Prefix.pch";
 				INFOPLIST_FILE = "IOSAnonQuestion/RSpeak-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = RSpeak;
 				PROVISIONING_PROFILE = "26469a8a-0b97-49ce-8e4f-f7cca3ea3b93";
 				WRAPPER_EXTENSION = app;
