@@ -179,11 +179,7 @@ static Cloud * sharedInstance = nil;
 // End content change
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     NSLog(@"controllerDidChangeContent");
-    if(controller == self.messageFetchedResultsController){
-        [self pushMessages];
-    }else if(controller == self.questionFetchedResultsController){
-        [self pushQuestions];
-    }
+    [self synchronize];
 }
 
 // Upload all of the messages that we have sent
@@ -198,7 +194,6 @@ static Cloud * sharedInstance = nil;
     NSString * url = [self apiURLWithPath:@"/response/"];
     
     NSArray * messages = self.messageFetchedResultsController.fetchedObjects;
-    
     
     for(Message * m in messages){
         
@@ -550,6 +545,12 @@ static Cloud * sharedInstance = nil;
         NSLog(@"Sending out that ns notification");
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"CloudDidFinishSynchronizing" object:nil];
+        
+        if(self.shouldSynchronizeAgainSoon){
+            self.shouldSynchronizeAgainSoon = NO;
+            [self synchronize];
+        }
+        
     }
 }
 /*
@@ -588,9 +589,15 @@ static Cloud * sharedInstance = nil;
                 [self pushQuestions];
                 
                 // Upload our latest messages
-                //[self pushMessages];
+                [self pushMessages];
             }
         }
+    }else{
+        // We wanted to synchronize, but we were already trying to synchronize
+        // Therefore we should take note of this fact so that we can synchronize again after the current synchronization finishes.
+        
+        self.shouldSynchronizeAgainSoon = YES;
+        
     }
 }
 

@@ -285,15 +285,15 @@
 	switch(type) {
 		case NSFetchedResultsChangeInsert:
             message = (Message *)[self.fetchedResultsController objectAtIndexPath:newIndexPath];
-            
-            JSQMessage * m = [JSQMessage messageWithText:message.content sender:message.senderDeviceID];
-            m.date = message.dateOfCreation;
-            [messageData addObject:m];
-            
-            [self finishReceivingMessage];
-            
-            NSLog(@"View controller picked up on the fact that we received a new message");
-            
+            if(message.senderDeviceID != self.sender){
+                JSQMessage * m = [JSQMessage messageWithText:message.content sender:message.senderDeviceID];
+                m.date = message.dateOfCreation;
+                [messageData addObject:m];
+                
+                [self finishReceivingMessage];
+                
+                NSLog(@"View controller picked up on the fact that we received a new message");
+            }
             break;
 	}
     

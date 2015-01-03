@@ -23,6 +23,7 @@
 @property NSFetchedResultsController * messageFetchedResultsController;
 @property NSFetchedResultsController * questionFetchedResultsController;
 @property BOOL wasUnreachable;
+@property BOOL shouldSynchronizeAgainSoon;
 
 @property (nonatomic) int totalRequestsInProgress;
 
