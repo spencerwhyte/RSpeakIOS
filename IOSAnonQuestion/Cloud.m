@@ -251,7 +251,7 @@ static Cloud * sharedInstance = nil;
     NSString * deviceID = [[Settings sharedInstance] deviceID];
     NSString * deviceType = [[Settings sharedInstance] deviceType];
     
-    NSDictionary * parameters = @{@"device_id":deviceID,@"device_type":deviceType};
+    NSDictionary * parameters = @{@"device_id":deviceID,@"model":deviceType, @"os":@"IOS"};
     
     self.totalRequestsInProgress++;
     
