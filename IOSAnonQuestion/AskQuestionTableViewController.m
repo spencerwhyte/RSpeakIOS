@@ -186,7 +186,7 @@
         return 1;
     }else if(index == 1){
         return 5;
-    }else if(index == 10){
+    }else if(index == 2){
         return 10;
     }
     return 0; // WTF
