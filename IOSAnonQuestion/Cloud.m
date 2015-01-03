@@ -27,7 +27,7 @@ static Cloud * sharedInstance = nil;
         #if TARGET_IPHONE_SIMULATOR
             self.baseURL = @"127.0.0.1:8000";
         #elif TARGET_OS_IPHONE
-            self.baseURL = @"192.168.0.23:8000";
+            self.baseURL = @"192.168.0.22:8000";
         #endif
         
         self.protocolVersion = @"v1";
@@ -195,7 +195,7 @@ static Cloud * sharedInstance = nil;
     
     NSString * deviceID = [[Settings sharedInstance] deviceID];
 
-    NSString * url = [self apiURLWithPath:@"/respond/"];
+    NSString * url = [self apiURLWithPath:@"/response/"];
     
     NSArray * messages = self.messageFetchedResultsController.fetchedObjects;
     
@@ -204,7 +204,7 @@ static Cloud * sharedInstance = nil;
         
         self.totalRequestsInProgress++; // We need to keep track of all of these upload operations
     
-        NSDictionary *parameters = @{@"device_id": deviceID, @"content":m.content, @"thread_id":m.thread.threadID};
+        NSDictionary *parameters = @{@"device_id": deviceID, @"content":m.content, @"thread_id": [NSNumber numberWithLongLong: m.thread.threadID ]};
         [manager POST:url parameters:parameters success:^(AFHTTPRequestOperation * operation, id responseObject){
             // Success
             NSError * error;
@@ -250,7 +250,7 @@ static Cloud * sharedInstance = nil;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    NSString * url = [self apiURLWithPath:@"/register/device/"];
+    NSString * url = [self apiURLWithPath:@"/device/"];
     
 
     NSString * deviceID = [[Settings sharedInstance] deviceID];
@@ -324,7 +324,7 @@ static Cloud * sharedInstance = nil;
     
     NSString * deviceID = [[Settings sharedInstance] deviceID];
 
-    NSString * url = [self apiURLWithPath:@"/ask/"];
+    NSString * url = [self apiURLWithPath:@"/question/"];
     
     for(Question * q in self.questionFetchedResultsController.fetchedObjects){
         self.totalRequestsInProgress++;
@@ -342,7 +342,7 @@ static Cloud * sharedInstance = nil;
             NSLog(@"%@", json);
             
             // Parse the response
-            NSString * questionID = [json valueForKey:@"question_id"];
+            int64_t questionID = [[json valueForKey:@"question_id"] longLongValue];
             q.questionID = questionID;
             
             NSArray * threads = [json valueForKey:@"threads"];
@@ -351,7 +351,7 @@ static Cloud * sharedInstance = nil;
                 NSEntityDescription * description = [NSEntityDescription entityForName:@"Thread" inManagedObjectContext:q.managedObjectContext];
                 Thread * t = [[Thread alloc] initWithEntity:description insertIntoManagedObjectContext:q.managedObjectContext];
                 t.responderDeviceID = [currentThread valueForKey:@"responder_device_id"];
-                t.threadID = [currentThread valueForKey:@"thread_id"];
+                t.threadID = [[currentThread valueForKey:@"thread_id"] integerValue];
                 t.dateOfCreation = [NSDate date];
                 t.question = q;
             }
@@ -381,7 +381,7 @@ static Cloud * sharedInstance = nil;
     
     NSString * deviceID = [[Settings sharedInstance] deviceID];
     NSDictionary *parameters = @{@"device_id": deviceID};
-    NSString * url = [self apiURLWithPath:@"/credit_score/"];
+    NSString * url = [self apiURLWithPath:@"/account/"];
     
     self.totalRequestsInProgress++;
     [manager GET:url parameters:parameters success:^(AFHTTPRequestOperation * operation, id responseObject){
@@ -414,7 +414,7 @@ static Cloud * sharedInstance = nil;
     
     NSString * deviceID = [[Settings sharedInstance] deviceID];
     NSDictionary *parameters = @{@"device_id": deviceID};
-    NSString * url = [self apiURLWithPath:@"/retrieve/updates/"];
+    NSString * url = [self apiURLWithPath:@"/update/"];
     
     NSLog(@"Device ID: %@", deviceID);
     NSLog(@"Parameters: %@", parameters);
@@ -433,50 +433,85 @@ static Cloud * sharedInstance = nil;
         
         
         NSArray * questionUpdates = [json valueForKey:@"question_updates"];
-        
+        NSLog(@"Question Updates %@", questionUpdates);
         if(![questionUpdates isEqual:[NSNull null]]){
             for(NSDictionary * update in questionUpdates){
                 
                 NSString * content = [update valueForKey:@"content"];
-                NSString * threadID = [update valueForKey:@"thread_id"];
-                NSString * time = [update valueForKey:@"time"];
-                NSString * questionID = [update valueForKey:@"question_id"];
-                
+                NSString * time = [update valueForKey:@"time_posted"];
+                int64_t questionID = [[update valueForKey:@"pk"] longLongValue];
+                NSString * askerDeviceID = [update valueForKey:@"asker_device"];
                 
                 NSEntityDescription * questionEntityDescription = [NSEntityDescription entityForName:@"Question" inManagedObjectContext:self.managedObjectContext];
                 Question * question = [[Question alloc] initWithEntity:questionEntityDescription insertIntoManagedObjectContext:self.managedObjectContext];
                 
                 question.content = content;
-                question.dateOfCreation = [NSDate dateWithTimeIntervalSince1970:[time integerValue]];
-                question.senderDeviceID = @"some_other_dude";
+                question.dateOfCreation = [time date];
+                question.senderDeviceID = askerDeviceID;
                 question.questionID = questionID;
-                
-                NSEntityDescription * threadEntityDescription = [NSEntityDescription entityForName:@"Thread" inManagedObjectContext:self.managedObjectContext];
-                Thread  * thread = [[Thread alloc] initWithEntity:threadEntityDescription insertIntoManagedObjectContext:self.managedObjectContext];
-                
-                thread.threadID = threadID;
-                thread.question = question;
-                
-                [question addThreadsObject:thread];
+                question.hasBeenPostedToServer = YES;
                 
                 NSError * error;
                 [self.managedObjectContext save:&error];
                 
             }
         }
+        
+        NSArray * threadUpdates = [json valueForKey:@"thread_updates"];
+        NSLog(@"Thread Updates: %@", threadUpdates);
+        if(![responseObject isEqual:[NSNull null]]){
+            for(NSDictionary * update in threadUpdates){
+                
+                
+                int64_t thread_id = [[update valueForKey:@"pk"] longLongValue];
+                NSString * answerer_device = [update valueForKey:@"answerer_device"];
+                int64_t question_id = [[update valueForKey:@"question_id"] longLongValue];
+                
+                // Look up the question by id
+                
+                NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                NSEntityDescription *entity = [NSEntityDescription entityForName:@"Question" inManagedObjectContext:self.managedObjectContext];
+                [fetchRequest setEntity:entity];
+                
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(questionID = %lld)", question_id];
+                [fetchRequest setPredicate:predicate];
+                
+                NSArray * results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+                Question  * question = [results objectAtIndex:0];
+                
+                
+                
+                NSEntityDescription * threadEntityDescription = [NSEntityDescription entityForName:@"Thread" inManagedObjectContext:self.managedObjectContext];
+                Thread  * thread = [[Thread alloc] initWithEntity:threadEntityDescription insertIntoManagedObjectContext:self.managedObjectContext];
+                
+                thread.threadID = thread_id;
+                thread.question = question;
+                thread.responderDeviceID = answerer_device;
+                
+                [question addThreadsObject:thread];
+            
+            
+                NSError * error;
+                [self.managedObjectContext save:&error];
+                
+            }
+        }
+        
+        
+        
         NSArray * responseUpdates = [json valueForKey:@"response_updates"];
         NSLog(@"Response Updates: %@", responseUpdates);
         if(![responseUpdates isEqual:[NSNull null]]){
         
             for(NSDictionary * response in responseUpdates){
                 
-                NSString * threadID = [response valueForKey:@"thread_id"];
+                int64_t threadID = [[response valueForKey:@"thread"] longLongValue];
                 
                 NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
                 NSEntityDescription *entity = [NSEntityDescription entityForName:@"Thread" inManagedObjectContext:self.managedObjectContext];
                 [fetchRequest setEntity:entity];
                 
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(threadID = %@)", threadID];
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(threadID = %lld)", threadID];
                 [fetchRequest setPredicate:predicate];
                 
                 
@@ -488,8 +523,8 @@ static Cloud * sharedInstance = nil;
                 
                 Message * message = [[Message alloc] initWithEntity:messageEntityDescription insertIntoManagedObjectContext:self.managedObjectContext];
                 
-                message.content = [response valueForKey:@"content"];
-                message.dateOfCreation = [NSDate dateWithTimeIntervalSince1970:[[response valueForKey:@"time"] intValue]];
+                message.content = [response valueForKey:@"response_content"];
+                message.dateOfCreation = [[response valueForKey:@"time_posted"] date];
                 message.thread = thread;
                 message.senderDeviceID = @"some_other_dude";
                 
@@ -556,7 +591,7 @@ static Cloud * sharedInstance = nil;
                 [self pushQuestions];
                 
                 // Upload our latest messages
-                [self pushMessages];
+                //[self pushMessages];
             }
         }
     }

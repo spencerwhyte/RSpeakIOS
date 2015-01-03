@@ -12,7 +12,7 @@
 @class Message, Question;
 
 @interface Thread : NSManagedObject
-@property (nonatomic, retain) NSString * threadID;
+@property (nonatomic) int64_t threadID;
 @property (nonatomic, retain) NSString * responderDeviceID;
 @property (nonatomic, retain) NSDate * dateOfCreation;
 @property (nonatomic, retain) NSSet *messages;

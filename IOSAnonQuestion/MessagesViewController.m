@@ -25,6 +25,7 @@
     NSArray *sortedMessages = [self.thread.messages sortedArrayUsingDescriptors:sortDescriptors];
 
     JSQMessage * questionMessage = [JSQMessage messageWithText:self.thread.question.content sender:self.thread.question.senderDeviceID];
+    questionMessage.date = self.thread.question.dateOfCreation;
     [messageData addObject:questionMessage];
     
     for (Message *message in sortedMessages) {

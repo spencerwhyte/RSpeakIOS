@@ -20,4 +20,12 @@
 @dynamic hasBeenPostedToServer;
 @dynamic maxNumberOfThreads;
 
+
+-(BOOL)isAddressedSoleyToMe{
+    NSString * responder = [[self.threads anyObject] responderDeviceID];
+    NSString * mine = [[Settings sharedInstance] deviceID];
+    NSLog(@"%@ V %@", responder, mine);
+    return [responder isEqualToString: mine];
+}
+
 @end

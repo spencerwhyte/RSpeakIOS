@@ -24,6 +24,7 @@
 		F334798B193D5F7F00D839D2 /* typingMine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F3347981193D5F7F00D839D2 /* typingMine@2x.png */; };
 		F334798C193D5F7F00D839D2 /* typingSomeone.png in Resources */ = {isa = PBXBuildFile; fileRef = F3347982193D5F7F00D839D2 /* typingSomeone.png */; };
 		F334798D193D5F7F00D839D2 /* typingSomeone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F3347983193D5F7F00D839D2 /* typingSomeone@2x.png */; };
+		F34B987B1A5731E100D85893 /* NSString+Date.m in Sources */ = {isa = PBXBuildFile; fileRef = F34B987A1A5731E100D85893 /* NSString+Date.m */; };
 		F379C41B191F41F700165497 /* LimitedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F379C41A191F41F700165497 /* LimitedTextView.m */; };
 		F3A7EA02192967C700E31A47 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F3A7EA00192967C700E31A47 /* DataModel.xcdatamodeld */; };
 		F3A7EA201929C3DB00E31A47 /* Thread.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A7EA1F1929C3DB00E31A47 /* Thread.m */; };
@@ -108,6 +109,8 @@
 		F3347981193D5F7F00D839D2 /* typingMine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typingMine@2x.png"; sourceTree = "<group>"; };
 		F3347982193D5F7F00D839D2 /* typingSomeone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typingSomeone.png; sourceTree = "<group>"; };
 		F3347983193D5F7F00D839D2 /* typingSomeone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typingSomeone@2x.png"; sourceTree = "<group>"; };
+		F34B98791A5731E100D85893 /* NSString+Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Date.h"; sourceTree = "<group>"; };
+		F34B987A1A5731E100D85893 /* NSString+Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Date.m"; sourceTree = "<group>"; };
 		F379C419191F41F700165497 /* LimitedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LimitedTextView.h; sourceTree = "<group>"; };
 		F379C41A191F41F700165497 /* LimitedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LimitedTextView.m; sourceTree = "<group>"; };
 		F3A7EA01192967C700E31A47 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -237,6 +240,15 @@
 				F3347960193D5F4700D839D2 /* UIBubbleTableViewDataSource.h */,
 			);
 			name = UIBubbleTableView;
+			sourceTree = "<group>";
+		};
+		F34B98781A5731C900D85893 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				F34B98791A5731E100D85893 /* NSString+Date.h */,
+				F34B987A1A5731E100D85893 /* NSString+Date.m */,
+			);
+			name = Custom;
 			sourceTree = "<group>";
 		};
 		F3A7EA291929CA2500E31A47 /* Controller */ = {
@@ -444,6 +456,7 @@
 		F3F2A7E118D4E266001401C0 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				F34B98781A5731C900D85893 /* Custom */,
 				F3B700DA19BDD14300356309 /* UIImage */,
 				F3B700CE19BD342300356309 /* UIColor */,
 				F3347955193D5F2200D839D2 /* UIBubbleTableView */,
@@ -656,6 +669,7 @@
 				F3A7EA201929C3DB00E31A47 /* Thread.m in Sources */,
 				F3E0AFB019200E0F0014C610 /* CurrencyDashboardView.m in Sources */,
 				F3F2A7D518D4DE82001401C0 /* InboxNavigationViewController.m in Sources */,
+				F34B987B1A5731E100D85893 /* NSString+Date.m in Sources */,
 				F3F2A79718D4D0D6001401C0 /* AppDelegate.m in Sources */,
 				F3CFB47B192E888D000A8CB3 /* BoxTableViewController.m in Sources */,
 				F3F2A7EB18D4E3E3001401C0 /* SettingsNavigationController.m in Sources */,

@@ -100,6 +100,9 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+    [[Cloud sharedInstance] synchronize];
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -108,7 +111,7 @@
 }
 
 -(void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
-    NSLog(@"GOT A FRICKEN PUSH! %@", userInfo);
+    [[Cloud sharedInstance] synchronize];
     
 }
 

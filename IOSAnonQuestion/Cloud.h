@@ -13,6 +13,7 @@
 #import "Thread.h"
 #import "Message.h"
 #import "Settings.h"
+#import "NSString+Date.h"
 
 @interface Cloud : NSObject<NSFetchedResultsControllerDelegate>
 

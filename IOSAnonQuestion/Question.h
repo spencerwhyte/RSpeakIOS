@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Settings.h"
+
 
 @class Thread;
 
 @interface Question : NSManagedObject
-@property (nonatomic, retain) NSString * questionID;
+@property (nonatomic) int64_t questionID;
 @property (nonatomic, retain) NSString * senderDeviceID;
 @property (nonatomic, retain) NSString * content;
 @property (nonatomic, retain) NSDate * dateOfCreation;
@@ -27,5 +29,8 @@
 - (void)removeThreadsObject:(Thread *)value;
 - (void)addThreads:(NSSet *)values;
 - (void)removeThreads:(NSSet *)values;
+
+
+-(BOOL)isAddressedSoleyToMe;
 
 @end

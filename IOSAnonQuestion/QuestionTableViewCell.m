@@ -39,18 +39,22 @@
         dateString = @"";
     }
     self.textLabel.text = self.question.content;
-    if(self.question.hasBeenPostedToServer){ // If this is still waiting to be uploaded
-        if(question.threads.count == 0){
-            self.detailTextLabel.text = [@"No Answerers - " stringByAppendingString:dateString];
-        }else if(question.threads.count == 1){
-            self.detailTextLabel.text = [@"1 Answerer - " stringByAppendingString:dateString];
-        }else{
-            self.detailTextLabel.text = [NSString stringWithFormat:[@"%d Answerers - " stringByAppendingString:dateString], self.question.threads.count];
-        }
-        self.detailTextLabel.textColor = [UIColor blackColor];
+    if([question isAddressedSoleyToMe]){
+        self.detailTextLabel.text =dateString;
     }else{
-        self.detailTextLabel.textColor = [UIColor redColor];
-        self.detailTextLabel.text = @"Question Yet to Reach Server";
+        if(self.question.hasBeenPostedToServer){ // If this is still waiting to be uploaded
+            if(question.threads.count == 0){
+                self.detailTextLabel.text = [@"No Answerers - " stringByAppendingString:dateString];
+            }else if(question.threads.count == 1){
+                self.detailTextLabel.text = [@"1 Answerer - " stringByAppendingString:dateString];
+            }else{
+                self.detailTextLabel.text = [NSString stringWithFormat:[@"%d Answerers - " stringByAppendingString:dateString], self.question.threads.count];
+            }
+            self.detailTextLabel.textColor = [UIColor blackColor];
+        }else{
+            self.detailTextLabel.textColor = [UIColor redColor];
+            self.detailTextLabel.text = @"Question Yet to Reach Server";
+        }
     }
 
 }

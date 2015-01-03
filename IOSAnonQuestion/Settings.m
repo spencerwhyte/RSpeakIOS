@@ -72,6 +72,8 @@ static Settings * sharedSettings = nil;
 
 
 -(BOOL)hasAquiredPushNotificationID{
+    //return false;
+    // TODO FIX
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     return ([defaults stringForKey:keyPushNotificationID]  != nil);
 }
@@ -88,7 +90,11 @@ static Settings * sharedSettings = nil;
 }
 
 -(NSString *)deviceID{
-    return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    #if TARGET_IPHONE_SIMULATOR
+        return @"AFFD0484-EA71-44DD-A3B9-4276C1003FAF";
+    #else
+        return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    #endif
 }
 
 

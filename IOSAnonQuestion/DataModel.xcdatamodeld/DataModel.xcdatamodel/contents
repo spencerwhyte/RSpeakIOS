@@ -12,20 +12,20 @@
         <attribute name="dateOfCreation" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="hasBeenPostedToServer" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="maxNumberOfThreads" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="questionID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="questionID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="senderDeviceID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="threads" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Thread" inverseName="question" inverseEntity="Thread" syncable="YES"/>
     </entity>
     <entity name="Thread" representedClassName="Thread" syncable="YES">
         <attribute name="dateOfCreation" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="responderDeviceID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="threadID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="threadID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="thread" inverseEntity="Message" syncable="YES"/>
         <relationship name="question" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Question" inverseName="threads" inverseEntity="Question" syncable="YES"/>
     </entity>
     <elements>
         <element name="Message" positionX="-29" positionY="9" width="128" height="118"/>
         <element name="Question" positionX="324" positionY="-18" width="128" height="150"/>
-        <element name="Thread" positionX="142" positionY="-27" width="128" height="118"/>
+        <element name="Thread" positionX="142" positionY="-27" width="128" height="120"/>
     </elements>
 </model>
