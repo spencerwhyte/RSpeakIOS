@@ -18,6 +18,8 @@
 {
     [super viewDidLoad];
     
+    self.sender = [[Settings sharedInstance] deviceID];
+    
     messageData = [[NSMutableArray alloc] init];
     
     NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"dateOfCreation" ascending:YES]];
@@ -47,6 +49,7 @@
     self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero;
     
 
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
