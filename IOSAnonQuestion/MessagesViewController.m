@@ -6,8 +6,9 @@
 @interface MessagesViewController ()
 {
     NSMutableArray * messageData;
-}
 
+}
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @end
 
 @implementation MessagesViewController
@@ -48,7 +49,22 @@
     self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeZero;
     self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero;
     
-
+    
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSError *error = nil;
+	if (![[self fetchedResultsController] performFetch:&error]) {
+		/*
+		 Replace this implementation with code to handle the error appropriately.
+		 
+		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+		 */
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}
     
 }
 
@@ -260,6 +276,63 @@
      */
 }
 
+#pragma mark NSFetchedResultsController methods
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+	Message * message = nil;
+    
+	switch(type) {
+		case NSFetchedResultsChangeInsert:
+            message = (Message *)[self.fetchedResultsController objectAtIndexPath:newIndexPath];
+            
+            JSQMessage * m = [JSQMessage messageWithText:message.content sender:message.senderDeviceID];
+            m.date = message.dateOfCreation;
+            [messageData addObject:m];
+            
+            [self finishReceivingMessage];
+            
+            NSLog(@"View controller picked up on the fact that we received a new message");
+            
+            break;
+	}
+    
+}
+
+- (NSFetchedResultsController *)fetchedResultsController {
+    // Do we need to refetch the results?
+    // Set up the fetched results controller if needed.
+    if (_fetchedResultsController == nil) {
+        // Create the fetch request for the entity.
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        // Edit the entity name as appropriate.
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:self.managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSPredicate * p =[NSPredicate predicateWithFormat:@"thread.threadID == %lld", self.thread.threadID];
+        NSLog(@"Looking for messages that belong to the thread with id %lld", self.thread.threadID);
+        [fetchRequest setPredicate:p];
+        
+        /// Edit the sort key as appropriate.
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateOfCreation" ascending:YES];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+        
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        // Edit the section name key path and cache name if appropriate.
+        // nil for section name key path means "no sections".
+        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+        
+        aFetchedResultsController.delegate = self;
+        self.fetchedResultsController = aFetchedResultsController;
+        
+        NSError * error;
+        NSArray * res = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        NSLog(@"%@", res);
+
+    }
+	return _fetchedResultsController;
+}
 
 
 

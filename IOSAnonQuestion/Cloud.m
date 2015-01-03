@@ -27,7 +27,7 @@ static Cloud * sharedInstance = nil;
         #if TARGET_IPHONE_SIMULATOR
             self.baseURL = @"127.0.0.1:8000";
         #elif TARGET_OS_IPHONE
-            self.baseURL = @"192.168.0.22:8000";
+            self.baseURL = @"169.254.2.225:8000";
         #endif
         
         self.protocolVersion = @"v1";
@@ -518,15 +518,13 @@ static Cloud * sharedInstance = nil;
                 NSArray * results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
                 Thread * thread = [results objectAtIndex:0];
                 
-                
                 NSEntityDescription * messageEntityDescription = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:self.managedObjectContext];
                 
                 Message * message = [[Message alloc] initWithEntity:messageEntityDescription insertIntoManagedObjectContext:self.managedObjectContext];
-                
                 message.content = [response valueForKey:@"response_content"];
                 message.dateOfCreation = [[response valueForKey:@"time_posted"] date];
                 message.thread = thread;
-                message.senderDeviceID = @"some_other_dude";
+                message.senderDeviceID = [response valueForKey:@"responder_device"];
                 
                 NSError * error;
                 [self.managedObjectContext save:&error];
@@ -580,7 +578,6 @@ static Cloud * sharedInstance = nil;
                 We need to be careful here
              
                 */
-                
                 // Check and see if our credit score has changed etc.
                 [self retrieveCreditScore];
                 

@@ -10,8 +10,10 @@
 #import "NSBubbleData.h"
 #import "Question.h"
 #import "JSQMessages.h"
+#import <CoreData/CoreData.h>
+#import <Foundation/Foundation.h>
 
-@interface MessagesViewController : JSQMessagesViewController <JSQMessagesCollectionViewDataSource,JSQMessagesCollectionViewDelegateFlowLayout>
+@interface MessagesViewController : JSQMessagesViewController <JSQMessagesCollectionViewDataSource,JSQMessagesCollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate>
 @property NSManagedObjectContext * managedObjectContext;
 @property Thread * thread;
 @property UIImageView * outgoingBubbleImageView;
